@@ -41,6 +41,10 @@ for appearance in light dark; do
       [ "$(wc -c < "$OUT/$scene-$appearance.png")" -gt 100000 ] && break
       echo "Blank capture for $scene-$appearance, retrying"
     done
+    if [ "$(wc -c < "$OUT/$scene-$appearance.png")" -le 100000 ]; then
+      echo "Capture for $scene-$appearance is still blank; refusing to commit a broken screenshot." >&2
+      exit 1
+    fi
     echo "Captured $scene-$appearance"
   done
 done
