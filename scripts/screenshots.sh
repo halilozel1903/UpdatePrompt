@@ -30,10 +30,17 @@ xcrun simctl install "$UDID" "$APP"
 for appearance in light dark; do
   xcrun simctl ui "$UDID" appearance "$appearance"
   for scene in "$@"; do
-    xcrun simctl terminate "$UDID" "$BUNDLE_ID" 2>/dev/null || true
-    xcrun simctl launch "$UDID" "$BUNDLE_ID" -screenshot "$scene"
-    sleep 6
-    xcrun simctl io "$UDID" screenshot "$OUT/$scene-$appearance.png"
+    # A blank frame (app still launching after an appearance switch) compresses to a tiny PNG:
+    # retry until the capture has real content.
+    for attempt in 1 2 3; do
+      xcrun simctl terminate "$UDID" "$BUNDLE_ID" 2>/dev/null || true
+      sleep 1
+      xcrun simctl launch "$UDID" "$BUNDLE_ID" -screenshot "$scene"
+      sleep $((6 + attempt * 2))
+      xcrun simctl io "$UDID" screenshot "$OUT/$scene-$appearance.png"
+      [ "$(wc -c < "$OUT/$scene-$appearance.png")" -gt 100000 ] && break
+      echo "Blank capture for $scene-$appearance, retrying"
+    done
     echo "Captured $scene-$appearance"
   done
 done
