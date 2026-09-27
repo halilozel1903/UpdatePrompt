@@ -1,0 +1,17 @@
+{
+  "resultCount": 1,
+  "results": [
+    {
+      "trackId": 1234567890,
+      "trackName": "Sample Notes",
+      "bundleId": "com.example.notes",
+      "version": "2.10.0",
+      "releaseNotes": "• Home Screen widgets\n• Faster iCloud sync\n• Bug fixes and performance improvements\n",
+      "minimumOsVersion": "17.0",
+      "currentVersionReleaseDate": "2026-09-20T07:00:00Z",
+      "trackViewUrl": "https://apps.apple.com/us/app/sample-notes/id1234567890?uo=4",
+      "price": 0.0,
+      "currency": "USD"
+    }
+  ]
+}
